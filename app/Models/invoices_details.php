@@ -18,7 +18,7 @@ class invoices_details extends Model
         'user'
     ];
  public function invoices(){
-        return $this->belongsTo(invoices::class ,'invoice_id');
+        return $this->belongsTo(invoices::class ,'invoice_id','id');
     }
 
 

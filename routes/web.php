@@ -8,6 +8,8 @@ use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\InvoicesDetailsController;
 use App\Http\Controllers\InvoiceAttachmentsController;
+use App\Http\Controllers\InvoiceAchiveController;
+
 
 
 
@@ -52,13 +54,20 @@ Route::post('delete_file',[InvoicesDetailsController::class,'destroy'])->name('d
 
 //*=======================================
 Route::get('edit_invoice/{id}',[InvoicesController::class,'edit']);
+
 Route::get('Status_show/{id}',[InvoicesController::class,'show'])->name('Status_show');
 
-
 Route::post('/Status_Update/{id}', [InvoicesController::class,'Status_Update'])->name('Status_Update');
+// ---------------------------
+Route::resource('Archive', InvoiceAchiveController::class);
+// ---------------------------
+Route::get('invoices_paid',[InvoicesController::class ,'invoices_paid'])->name('invoices_paid');
+
+Route::get('invoices_unpaid',[InvoicesController::class ,'invoices_unpaid'])->name('invoices_unpaid');
+
+Route::get('invoices_Partial',[InvoicesController::class ,'invoices_Partial'])->name('invoices_Partial');
 
 Route::get('Print_invoice/{id}',[InvoicesController::class,'Print_invoice']);
-
 
 // ---------------------
 Route::get('/{page}', [AdminController::class, 'index']);

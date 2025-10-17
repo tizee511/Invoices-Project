@@ -78,7 +78,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'style="text-align: center">
+                        <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50' style="text-align: center">
       <thead>
        <tr>
         <th class="border-bottom-0">#</th>
@@ -97,10 +97,9 @@
        </tr>
       </thead>
       <tbody>
-       {{$i = 0;}}
+         @php $i=0 @endphp
        @foreach ($invoices as $invoice)
-       {{$i++;}}
-       <tr>
+         @php $i++ @endphp
         <td>{{ $i }}</td>
         <td>{{ $invoice->invoice_number }} </td>
         <td>{{ $invoice->invoice_Date }}</td>
@@ -115,13 +114,13 @@
         <td>{{ $invoice->value_vat }}</td>
         <td>{{ $invoice->total }}</td>
         <td>
-         @if ($invoice->value_status == 1)
-         <span class="text-success">{{ $invoice->status }}</span>
-         @elseif($invoice->value_status == 2)
-         <span class="text-danger">{{ $invoice->status }}</span>
-         @else
-         <span class="text-warning">{{ $invoice->status }}</span>
-         @endif
+            @if ($invoice->value_status == 1)
+            <span class="text-success">{{ $invoice->status }}</span>
+            @elseif($invoice->value_status == 2)
+            <span class="text-danger">{{ $invoice->status }}</span>
+            @else
+            <span class="text-warning">{{ $invoice->status }}</span>
+            @endif
         </td>
         <td>{{ $invoice->note }}</td>
         <td>

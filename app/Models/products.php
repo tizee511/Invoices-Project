@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\sections;
 class products extends Model
 {
 
@@ -11,7 +11,7 @@ class products extends Model
 
     public function sections()
     {
-        return $this->belongsTo(sections::class, 'section_id');
+        return $this->belongsTo(sections::class, 'section_id','id');
     }
 }
 

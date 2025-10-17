@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\sections;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class invoices extends Model
 {
-      protected $fillable = [
+    use SoftDeletes;
+
+    protected $fillable = [
         'invoice_number',
         'invoice_Date',
         'due_date',
@@ -24,15 +28,11 @@ class invoices extends Model
         'Payment_Date'
 
     ];
-protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     public function sections()
     {
-    return $this->belongsTo(sections::class,'section_id');
-    }
-    public function invoices_details()
-    {
-    return $this->belongsTo(invoices_details::class,'invoice_id');
+    return $this->belongsTo(sections::class,'section_id','id');
     }
 
 

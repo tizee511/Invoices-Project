@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Notification;
 use App\Models\invoices;
 use App\Models\invoices_details;
 use App\Models\sections;
 use App\Models\invoice_attachments;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\AddInvoice;
 
 
 class InvoicesController extends Controller
@@ -31,14 +34,13 @@ class InvoicesController extends Controller
         $sections = sections::all();
         return view('Invoices.add_invoice',compact('sections'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         // return $request;
-          invoices::create([
+        invoices::create([
             'invoice_number' => $request->invoice_number,
             'invoice_Date' => $request->invoice_Date,
             'due_date' => $request->due_date,
@@ -85,10 +87,12 @@ class InvoicesController extends Controller
             $request->pic->move(public_path('Attachments/' . $invoice_number), $imageName);
         }
         //-------------------------
-        session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
-        return back();
-    }
+        $user= User::first();
+        Notification::send($user, new AddInvoice($invoice_id));
 
+        session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
+        return redirect('/invoices');
+    }
     /**
      * Display the specified resource.
      */
@@ -97,7 +101,6 @@ class InvoicesController extends Controller
         $invoices = invoices::where('id', $id)->first();
         return view('invoices.status_update', compact('invoices'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -107,11 +110,9 @@ class InvoicesController extends Controller
         $sections = sections::all();
         return view('Invoices.edit_invoice',compact('invoices','sections'));
     }
-
     /**
      * Update the specified resource in storage.
      */
-
     public function update(Request $request)
     {
 
@@ -134,7 +135,6 @@ class InvoicesController extends Controller
         session()->flash('edit', 'تم تعديل الفاتورة بنجاح');
         return back();
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -159,7 +159,6 @@ class InvoicesController extends Controller
         return redirect('/invoices');
 
         }
-
         else {
 
             $invoices->delete();
@@ -174,17 +173,8 @@ class InvoicesController extends Controller
         $products = DB::table("products")->where("section_id", $id)->pluck("Product_name", "id");
         return json_encode($products);
     }
-
     /**
      * invoices_details::create([
-            'id_Invoice' => $invoice_id,
-            'invoice_number' => $request->invoice_number,
-            'product' => $request->product,
-            'section' => $request->Section,
-            'status' => 'غير مدفوعة',
-            'value_status' => 2,
-            'note' => $request->note,
-            'user' => (Auth::user()->name),
      */
     public function Status_Update($id, Request $request)
     {
@@ -234,10 +224,22 @@ class InvoicesController extends Controller
 
     }
 
-
     public function Print_invoice($id)
     {
         $invoices = invoices::where('id', $id)->first();
         return view('invoices.Print_invoice',compact('invoices'));
+    }
+
+    public function invoices_paid(){
+        $invoices = invoices::where('value_status', 1)->get();
+        return view('Invoices.invoices_paid',['invoices'=> $invoices]);
+    }
+    public function invoices_unpaid(){
+        $invoices = invoices::where('value_status', 2)->get();
+        return view('Invoices.invoices_unpaid',['invoices'=> $invoices]);
+    }
+    public function invoices_Partial(){
+        $invoices = invoices::where('value_status', 3)->get();
+        return view('Invoices.invoices_Partial',['invoices'=> $invoices]);
     }
 }

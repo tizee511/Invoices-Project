@@ -91,29 +91,27 @@
                                     $i++
                                     @endphp
                                     <tr>
-                                        <td>{{ $i }}</td>
+                                     <td>{{ $i }}</td>
                                         <td>{{ $invoice->invoice_number }} </td>
                                         <td>{{ $invoice->invoice_Date }}</td>
-                                        <td>{{ $invoice->Due_date }}</td>
+                                        <td>{{ $invoice->due_date }}</td>
                                         <td>{{ $invoice->product }}</td>
                                         <td><a
-                                                href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
+                                                href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->sections->section_name }}</a>
                                         </td>
-                                        <td>{{ $invoice->Discount }}</td>
-                                        <td>{{ $invoice->Rate_VAT }}</td>
-                                        <td>{{ $invoice->Value_VAT }}</td>
-                                        <td>{{ $invoice->Total }}</td>
+                                            <td>{{ $invoice->discount }}</td>
+                                        <td>{{ $invoice->rate_vat }}</td>
+                                        <td>{{ $invoice->value_vat }}</td>
+                                        <td>{{ $invoice->total }}</td>
                                         <td>
-                                            @if ($invoice->Value_Status == 1)
-                                                <span class="text-success">{{ $invoice->Status }}</span>
-                                            @elseif($invoice->Value_Status == 2)
-                                                <span class="text-danger">{{ $invoice->Status }}</span>
+                                            @if ($invoice->value_vat == 1)
+                                                <span class="text-success">{{ $invoice->status }}</span>
+                                            @elseif($invoice->value_vat == 2)
+                                                <span class="text-danger">{{ $invoice->status }}</span>
                                             @else
-                                                <span class="text-warning">{{ $invoice->Status }}</span>
+                                                <span class="text-warning">{{ $invoice->status }}</span>
                                             @endif
-
                                         </td>
-
                                         <td>{{ $invoice->note }}</td>
                                         <td>
                                             <div class="dropdown">
@@ -156,8 +154,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <form action="{{ route('Archive.destroy', 'test') }}" method="post">
-                        {{ method_field('delete') }}
-                        {{ csrf_field() }}
+                    @method('delete')
+                    @csrf
                 </div>
                 <div class="modal-body">
                     هل انت متاكد من عملية الحذف ؟
@@ -184,8 +182,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <form action="{{ route('Archive.update', 'test') }}" method="post">
-                        {{ method_field('patch') }}
-                        {{ csrf_field() }}
+                        @method('patch')
+                        @csrf
+
                 </div>
                 <div class="modal-body">
                     هل انت متاكد من عملية الغاء الارشفة ؟

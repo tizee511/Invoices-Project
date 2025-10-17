@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('Product_name');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('section_id');
-            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
+            $table->foreignId('section_id')->constrained('sections')->references('id')->onDelete('cascade');
             $table->timestamps();
         });
     }

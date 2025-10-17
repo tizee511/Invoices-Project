@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoices_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_Invoice');
             $table->string('invoice_number',50);
-            $table->foreign('id_Invoice')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreignId('id_Invoice')->constrained('invoices')->references('id')->onDelete('cascade');
             $table->string('product',50);
             $table->string('section',999);
             $table->string('status',50);
