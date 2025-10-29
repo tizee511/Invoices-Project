@@ -174,8 +174,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <form action="{{ route('invoices.destroy', 'test') }}" method="post">
-                        {{ method_field('delete') }}
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('DELETE')
                 </div>
                 <div class="modal-body">
                     هل انت متاكد من عملية الحذف ؟
@@ -202,8 +202,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <form action="{{ route('invoices.destroy', 'test') }}" method="post">
-                        {{ method_field('delete') }}
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('DELETE')
                 </div>
                 <div class="modal-body">
                     هل انت متاكد من عملية الارشفة ؟

@@ -60,27 +60,16 @@ $modals = [
 </div>
 @endif
 
-
-
-
-
-
-
-
-
-
-
 <!-- row -->
 <div class="row">
-
 
  <div class="col-xl-12">
   <div class="card mg-b-20">
    <div class="card-header pb-0">
     <div class="d-flex justify-content-between">
-     {{-- @can('اضافة منتج') --}}
+     @can('اضافة منتج')
      <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#exampleModal">اضافة منتج</a>
-     {{-- @endcan --}}
+     @endcan
     </div>
    </div>
    <div class="card-body">
@@ -125,7 +114,6 @@ $modals = [
  </div>
  <!--/div-->
 
-
  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
    <div class="modal-content">
@@ -167,8 +155,6 @@ $modals = [
   </div>
  </div>
 
-
-
  <!-- edit -->
  <div class="modal fade" id="edit_Product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -194,8 +180,7 @@ $modals = [
 
       <label class="my-1 mr-2" for="section_id">القسم</label>
       <select name="section_id" id="section_id" class="custom-select my-1 mr-sm-2" required>
-       @foreach ($sections as $section)
-       {{-- {{ $products->section_id == $section->id ? 'selected' : '' }} --}}
+       @foreach ($sections as $section)}
        <option value="{{ $section->id }}" >
         {{ $section->section_name }}
        </option>
@@ -247,8 +232,6 @@ $modals = [
   </div>
  </div>
 
-
-
 </div>
 <!-- row closed -->
 </div>
@@ -285,45 +268,6 @@ $modals = [
 <script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <!-- Internal Modal js-->
 <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
-
-{{-- <script>
-    // مودال التعديل
-    $('#edit_Product').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var Product_name = button.data('name');
-        var section_name = button.data('section_name');
-        var pro_id = button.data('pro_id');
-        var description = button.data('description');
-        var modal = $(this);
-        modal.find('.modal-body #Product_name').val(Product_name);
-        modal.find('.modal-body #section_name').val(section_name);
-        modal.find('.modal-body #description').val(description);
-        modal.find('.modal-body #pro_id').val(pro_id);
-    });
-
-    // مودال الحذف
-    $('#modaldemo9').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var pro_id = button.data('pro_id');
-        var product_name = button.data('product_name');
-        var modal = $(this);
-        modal.find('.modal-body #pro_id').val(pro_id);
-        modal.find('.modal-body #product_name').val(product_name);
-    });
-
-    // فتح المودال تلقائيًا عند وجود Validation Errors أو جلسة Edit
-    document.addEventListener('DOMContentLoaded', function() {
-        @if($errors->any())
-        $('#exampleModal').modal('show');
-        @endif
-
-        // @if(session()->has('Edit'))
-        // $('#edit_Product').modal('show');
-        // // @endif
-    });
-
-
-</script> --}}
 
 <!-- سكربتات DataTables -->
 <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>

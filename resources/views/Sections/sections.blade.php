@@ -71,17 +71,14 @@
 
 <!-- row -->
 <div class="row">
-
-
     <div class="col-xl-12">
         <div class="card mg-b-20">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
-
+                    @can('اضافة قسم')
                     <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldem1">اضافة القســــم</a>
-
+                    @endcan
                 </div>
-
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -103,13 +100,12 @@
                                 <td> {{$value-> section_name}}</td>
                                 <td> {{$value-> description }}</td>
                                 <td>
-                                    {{-- @can('تعديل قسم') --}}
+                                    @can('تعديل قسم')
                                     <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale" data-id="{{ $value->id }}" data-section_name="{{ $value->section_name }}" data-description="{{ $value->description }}" data-toggle="modal" href="#exampleModal2" title="تعديل"><i class="las la-pen"></i></a>
-                                    {{-- @endcan --}}
-
-                                    {{-- @can('حذف قسم') --}}
+                                    @endcan
+                                    @can('حذف قسم')
                                     <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale" data-id="{{ $value->id }}" data-section_name="{{ $value->section_name }}" data-toggle="modal" href="#modaldemo9" title="حذف"><i class="las la-trash"></i></a>
-                                    {{-- @endcan --}}
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach
@@ -186,7 +182,6 @@
         </div>
     </div>
 
-
     <!-- delete -->
     <div class="modal" id="modaldemo9">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -215,7 +210,6 @@
 </div>
 </div>
 </div>
-
 <!-- main-content closed -->
 @endsection
 @section('js')
@@ -254,7 +248,6 @@
     })
 
 </script>
-
 <script>
     $('#modaldemo9').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget)

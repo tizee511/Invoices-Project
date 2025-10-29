@@ -1,18 +1,19 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Notification;
+use App\Exports\InvoicesExport;
+use App\Models\invoice_attachments;
 use App\Models\invoices;
 use App\Models\invoices_details;
 use App\Models\sections;
-use App\Models\invoice_attachments;
 use App\Models\User;
+use App\Notifications\AddInvoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
-use App\Notifications\AddInvoice;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class InvoicesController extends Controller
@@ -87,8 +88,13 @@ class InvoicesController extends Controller
             $request->pic->move(public_path('Attachments/' . $invoice_number), $imageName);
         }
         //-------------------------
-        $user= User::first();
-        Notification::send($user, new AddInvoice($invoice_id));
+        // ? خاصه بلاشعارات عند اضافه فاتورة عبر  الايميل
+        // $user= User::first();
+        // Notification::send($user, new AddInvoice($invoice_id));
+        // ? خاصه بلاشعارات عند اضافه فاتورة عبر  قاعدة البيانات
+        $user = User::get();
+        $invoices = invoices::latest()->first();
+        Notification::send($user, new \App\Notifications\Addinvoice_DB($invoices));
 
         session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
         return redirect('/invoices');
@@ -157,7 +163,6 @@ class InvoicesController extends Controller
         $invoices->forceDelete();
         session()->flash('delete_invoice');
         return redirect('/invoices');
-
         }
         else {
 
@@ -167,8 +172,7 @@ class InvoicesController extends Controller
         }
     }
 
-
-     public function getproducts($id)
+    public function getproducts($id)
     {
         $products = DB::table("products")->where("section_id", $id)->pluck("Product_name", "id");
         return json_encode($products);
@@ -179,9 +183,7 @@ class InvoicesController extends Controller
     public function Status_Update($id, Request $request)
     {
         $invoices = invoices::findOrFail($id);
-
         if ($request->Status === 'مدفوعة') {
-
             $invoices->update([
                 'value_status' => 1,
                 'status' => $request->Status,
@@ -234,12 +236,29 @@ class InvoicesController extends Controller
         $invoices = invoices::where('value_status', 1)->get();
         return view('Invoices.invoices_paid',['invoices'=> $invoices]);
     }
+
     public function invoices_unpaid(){
         $invoices = invoices::where('value_status', 2)->get();
         return view('Invoices.invoices_unpaid',['invoices'=> $invoices]);
     }
+
     public function invoices_Partial(){
         $invoices = invoices::where('value_status', 3)->get();
         return view('Invoices.invoices_Partial',['invoices'=> $invoices]);
+    }
+
+    public function export()
+    {
+        // return "nnnnnnnnnnnnnnnn";
+        // return Excel::download(new InvoicesExport, 'invoices.xlsx');
+        return Excel::download(new InvoicesExport, 'invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
+
+    public function MarkAsread_all(Request $request){
+        $userUnreadNotification = Auth::user()->unreadNotifications;
+        if($userUnreadNotification){
+            $userUnreadNotification->markAsread();
+            return back();
+        }
     }
 }
